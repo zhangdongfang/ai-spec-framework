@@ -70,7 +70,7 @@ args: "问题描述"
 1. 实施修复
 2. Verification 铁律：展示验证结果（测试通过/编译通过/问题不再复现）
 3. Git commit: `fix: <修复描述>`
-4. 如有新发现，写入 log.md
+4. 如有新发现，写入 `changes/<变更名>/log.md`（如果当前有活跃变更）或 `knowledge/<slug>.md`
 
 ## 约束
 
