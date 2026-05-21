@@ -1,10 +1,10 @@
 ---
-name: open_apply
+name: open-apply
 description: "按 tasks.md 逐步执行编码 — 零偏差，Verification 铁律"
 args: "变更名"
 ---
 
-# open_apply — 按 Spec 执行编码
+# open-apply — 按 Spec 执行编码
 
 Plan 是合同，AI 是打印机。
 
@@ -13,7 +13,7 @@ Plan 是合同，AI 是打印机。
 你的第一条回复**必须完全输出**以下内容（将 `<变更名>` 替换为实际值）：
 
 ```
-[open_apply v1.0] 按 tasks.md 逐步执行编码 — 零偏差，Verification 铁律
+[open-apply v1.0] 按 tasks.md 逐步执行编码 — 零偏差，Verification 铁律
 [加载] 变更: <变更名> · spec.md: ✅/❌ · 分支: <分支名> · master/main: ✅/❌
 ```
 
@@ -63,4 +63,4 @@ Plan 是合同，AI 是打印机。
 所有 task 完毕后:
 1. 填写 tasks.md 底部的"完成"部分
 2. 输出执行摘要
-3. 提示: 执行 `skill open_review <变更名>` 进入审查
+3. 提示: 执行 `skill open-review <变更名>` 进入审查

@@ -1,10 +1,10 @@
 ---
-name: open_spec
+name: open-spec
 description: "创建变更提案 — 自动评估复杂度 → 选择模板 → Research → Spec → HARD-GATE"
 args: "需求描述（自然语言）"
 ---
 
-# open_spec — 创建变更提案
+# open-spec — 创建变更提案
 
 将用户需求转化为结构化变更文档。自动评估复杂度，选择对应模板。
 
@@ -13,7 +13,7 @@ args: "需求描述（自然语言）"
 你的第一条回复**必须完全输出**以下两行内容，不允许修改任何字符：
 
 ```
-[open_spec v1.0] 创建变更提案 — 自动评估复杂度 → 选择模板 → Research → Spec → HARD-GATE
+[open-spec v1.0] 创建变更提案 — 自动评估复杂度 → 选择模板 → Research → Spec → HARD-GATE
 [状态] rules/ 已读取: ✅/❌ · changes/ 状态: 无未完成/有未完成
 ```
 
@@ -78,7 +78,7 @@ args: "需求描述（自然语言）"
 文件位置: changes/<name>/
 
 请审阅 spec.md + tasks.md 后:
-- "确认" → 可执行 `skill open_apply`
+- "确认" → 可执行 `skill open-apply`
 - 修改意见 → 更新后重新确认
 - "取消" → 放弃
 
@@ -88,6 +88,6 @@ args: "需求描述（自然语言）"
 
 ## 约束
 
-- 待澄清全部解决前不允许进入 open_apply
+- 待澄清全部解决前不允许进入 open-apply
 - 引用 Research 发现的现有代码，不凭空设计
 - 涉及资金/状态变更/权限变更 → 高亮提醒

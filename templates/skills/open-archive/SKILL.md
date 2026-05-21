@@ -1,17 +1,17 @@
 ---
-name: open_archive
+name: open-archive
 description: "归档已完成变更 — 知识提取 + 经验沉淀"
 args: "变更名"
 ---
 
-# open_archive — 归档 + 知识沉淀
+# open-archive — 归档 + 知识沉淀
 
 ## ⚡ 技能激活确认（必须执行）
 
 你的第一条回复**必须完全输出**以下内容（将 `<变更名>` 替换为实际值）：
 
 ```
-[open_archive v1.0] 归档已完成变更 — 知识提取 + 经验沉淀
+[open-archive v1.0] 归档已完成变更 — 知识提取 + 经验沉淀
 [加载] 变更: <变更名> · knowledge/: ✅/❌ · log.md: ✅/❌
 ```
 

@@ -8,7 +8,7 @@
 
 - **轻量安装** — 一个脚本，只创建 `code_copilot/` 目录
 - **三级 Spec 模板** — L1 轻量 / L2 标准 / L3 完整，自动评估复杂度
-- **6 个 Skill** — open_setup, open_spec, open_apply, open_review, open_archive, open_debug（通过 skill 工具加载）
+- **6 个 Skill** — open-setup, open-spec, open-apply, open-review, open-archive, open-debug（通过 skill 工具加载）
 - **按需工具配置** — 用哪个 AI 工具就生成哪个配置
 - **知识飞轮** — 踩坑和决策自动沉淀，越用越聪明
 
@@ -23,8 +23,8 @@ cd /path/to/your-project
 /path/to/ai-spec-framework/install.sh --sync --tool=opencode
 
 # 在 AI 工具中通过 skill 工具加载
-skill open_setup    # AI 扫描代码，填充 rules/
-skill open_spec     # 创建变更提案（自动评估复杂度）
+skill open-setup    # AI 扫描代码，填充 rules/
+skill open-spec     # 创建变更提案（自动评估复杂度）
 ```
 
 详见 [docs/quick-start.md](docs/quick-start.md)。
@@ -51,13 +51,13 @@ your-project/
 ## 工作流
 
 ```
-skill open_spec    ──→  自动评估复杂度 → Research → 分段 Spec → HARD-GATE 确认
+skill open-spec    ──→  自动评估复杂度 → Research → 分段 Spec → HARD-GATE 确认
                                                 │
-skill open_apply   ──→  逐 Task 编码 → 验证铁律（必须展示证据）
+skill open-apply   ──→  逐 Task 编码 → 验证铁律（必须展示证据）
                                                 │
-skill open_review  ──→  Stage 1: Spec 合规 → Stage 2: 代码质量 → 修正循环
+skill open-review  ──→  Stage 1: Spec 合规 → Stage 2: 代码质量 → 修正循环
                                                 │
-skill open_archive ──→  知识沉淀 → 移入 archives/
+skill open-archive ──→  知识沉淀 → 移入 archives/
 ```
 
 ## 核心原则
@@ -85,12 +85,12 @@ skill open_archive ──→  知识沉淀 → 移入 archives/
 
 | Skill | 说明 |
 |-------|------|
-| `open_setup` | 分析项目，填充 rules/ |
-| `open_spec` | 创建变更提案（自动评估复杂度） |
-| `open_apply` | 按 Spec 逐步执行编码 |
-| `open_review` | 两阶段审查 + 修正循环 + 测试建议 |
-| `open_archive` | 归档 + 知识沉淀 |
-| `open_debug` | 系统化调试流程 |
+| `open-setup` | 分析项目，填充 rules/ |
+| `open-spec` | 创建变更提案（自动评估复杂度） |
+| `open-apply` | 按 Spec 逐步执行编码 |
+| `open-review` | 两阶段审查 + 修正循环 + 测试建议 |
+| `open-archive` | 归档 + 知识沉淀 |
+| `open-debug` | 系统化调试流程 |
 
 ## 支持的 AI 工具
 

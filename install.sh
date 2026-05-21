@@ -46,7 +46,7 @@ for arg in "$@"; do
             echo "全局安装后:"
             echo "  1. Skills 复制到 ~/.config/opencode/skills/"
             echo "  2. 重启 OpenCode 后自动发现"
-            echo "  3. 所有项目均可使用 skill open_spec 等命令"
+            echo "  3. 所有项目均可使用 skill open-spec 等命令"
             exit 0
             ;;
         --version)  echo "v${VERSION}"; exit 0 ;;
@@ -85,12 +85,12 @@ install_global() {
     echo "  ${global_dir}/"
     echo ""
     echo "重启 OpenCode 后即可使用:"
-    echo "  skill open_setup   # 初始化项目"
-    echo "  skill open_spec    # 创建变更提案"
-    echo "  skill open_apply   # 执行编码"
-    echo "  skill open_review  # 代码审查"
-    echo "  skill open_debug   # 系统调试"
-    echo "  skill open_archive # 归档归档"
+    echo "  skill open-setup   # 初始化项目"
+    echo "  skill open-spec    # 创建变更提案"
+    echo "  skill open-apply   # 执行编码"
+    echo "  skill open-review  # 代码审查"
+    echo "  skill open-debug   # 系统调试"
+    echo "  skill open-archive # 归档归档"
 }
 
 # ============================================================================
@@ -360,8 +360,8 @@ case "$INSTALL_MODE" in
         echo "  code_copilot/    框架目录（单一事实来源）"
         echo ""
         log_warn "下一步:"
-        echo "  1. 在 AI 工具中执行 open_setup 让 AI 扫描代码填充 rules/"
-        echo "  2. 使用 open_spec 开始第一个需求"
+        echo "  1. 在 AI 工具中执行 open-setup 让 AI 扫描代码填充 rules/"
+        echo "  2. 使用 open-spec 开始第一个需求"
         echo ""
         echo "  生成工具配置（可选）:"
         echo "    ./install.sh --sync --tool=opencode   # AGENTS.md + .opencode/skills/"
@@ -372,12 +372,12 @@ case "$INSTALL_MODE" in
         echo "    ./install.sh --global"
         echo ""
         echo "  可用 Skill:"
-        echo "    open_setup    — 分析项目，填充 rules/"
-        echo "    open_spec     — 创建变更提案（自动评估复杂度）"
-        echo "    open_apply    — 按 Spec 逐步执行编码"
-        echo "    open_review   — 两阶段审查 + 修正循环"
-        echo "    open_archive  — 归档 + 知识沉淀"
-        echo "    open_debug    — 系统化调试流程"
+        echo "    open-setup    — 分析项目，填充 rules/"
+        echo "    open-spec     — 创建变更提案（自动评估复杂度）"
+        echo "    open-apply    — 按 Spec 逐步执行编码"
+        echo "    open-review   — 两阶段审查 + 修正循环"
+        echo "    open-archive  — 归档 + 知识沉淀"
+        echo "    open-debug    — 系统化调试流程"
         ;;
     sync)
         sync_tool_configs

@@ -1,10 +1,10 @@
 ---
-name: open_review
+name: open-review
 description: "两阶段审查 — Spec 合规 + 代码质量 + 修正循环 + 测试建议"
 args: "变更名"
 ---
 
-# open_review — 两阶段审查 + 修正循环
+# open-review — 两阶段审查 + 修正循环
 
 不信报告，只信代码。
 
@@ -13,7 +13,7 @@ args: "变更名"
 你的第一条回复**必须完全输出**以下内容（将 `<变更名>` 替换为实际值）：
 
 ```
-[open_review v1.0] 两阶段审查 — Spec 合规 + 代码质量 + 修正循环 + 测试建议
+[open-review v1.0] 两阶段审查 — Spec 合规 + 代码质量 + 修正循环 + 测试建议
 [加载] 变更: <变更名> · tasks.md 完成状态: ✅/❌ · rules/: ✅/❌
 ```
 
@@ -67,5 +67,5 @@ args: "变更名"
 
 ## 最终报告
 
-- 全部 PASS → 提交 PR 进入人工审查，提示 `skill open_archive <变更名>`
+- 全部 PASS → 提交 PR 进入人工审查，提示 `skill open-archive <变更名>`
 - 存在问题 → 修正后重新审查

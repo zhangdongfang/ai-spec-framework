@@ -18,12 +18,12 @@
 
 | 命令 | 说明 |
 |------|------|
-| `open_setup` | 分析项目，填充 rules/ |
-| `open_spec` | 创建变更提案（自动评估复杂度） |
-| `open_apply` | 按 Spec 逐步执行编码 |
-| `open_review` | 两阶段审查 + 修正循环 + 测试建议 |
-| `open_archive` | 归档 + 知识沉淀 |
-| `open_debug` | 系统化调试流程 |
+| `open-setup` | 分析项目，填充 rules/ |
+| `open-spec` | 创建变更提案（自动评估复杂度） |
+| `open-apply` | 按 Spec 逐步执行编码 |
+| `open-review` | 两阶段审查 + 修正循环 + 测试建议 |
+| `open-archive` | 归档 + 知识沉淀 |
+| `open-debug` | 系统化调试流程 |
 
 超出以上范围的请求，礼貌拒绝并引导使用正确命令。
 
