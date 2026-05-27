@@ -12,7 +12,7 @@ args: "变更名"
 
 ```
 [open-archive v1.0] 归档已完成变更 — 知识提取 + 经验沉淀
-[加载] 变更: <变更名> · knowledge/: ✅/❌ · log.md: ✅/❌
+[加载] 变更: <变更名> · ai-work/knowledge/: ✅/❌ · log.md: ✅/❌
 ```
 
 输出此确认后，继续执行后续步骤。
@@ -21,18 +21,18 @@ args: "变更名"
 
 ### Step 1: 知识提取
 
-逐条展示 log.md 中的知识发现和踩坑记录，询问用户是否沉淀到 knowledge/。
+逐条展示 log.md 中的知识发现和踩坑记录，询问用户是否沉淀到 ai-work/knowledge/。
 
 ### Step 2: 写入知识文件
 
-确认的知识写入 `knowledge/<slug>.md`，更新 knowledge/index.md:
+确认的知识写入 `ai-work/knowledge/<slug>.md`，更新 ai-work/knowledge/index.md:
 ```
 - **触发关键词**: 一句话核心逻辑 -> `包名.类名.方法名`
 ```
 
 ### Step 3: 归档变更
 
-将 `changes/<变更名>/` 整个目录移到 `archives/`，更新 spec.md 状态为 done。
+将 `ai-work/changes/<变更名>/` 整个目录移到 `ai-work/archives/`，更新 spec.md 状态为 done。
 
 ### Step 4: 输出归档报告
 
@@ -47,7 +47,7 @@ args: "变更名"
 文件数: X 新增 / Y 修改 / Z 删除
 代码行数: +X / -Y
 耗时: X 天
-知识沉淀: X 条 → knowledge/<slug>.md
+知识沉淀: X 条 → ai-work/knowledge/<slug>.md
 关键决策: X 个
 遗留问题: X 个
 ========================================

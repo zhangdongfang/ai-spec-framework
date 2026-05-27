@@ -12,7 +12,7 @@
           ┌── 新功能 ──┐
 需求 ──→  ├── 老功能 ──┤──→ ├──→ open-spec ──→ open-apply ──→ open-review ──→ open-archive
           └── Bugfix ──┘     ↑                     ↑  ↖  ↑         ↓
-                          open-setup            open-understand  修正循环   knowledge/
+                           open-setup            open-understand  修正循环   ai-work/knowledge/
                                                       │
                                                     code-map.md
 ```
@@ -21,13 +21,13 @@
 
 | Skill | 什么时候用 | 产出 | 一句话 |
 |-------|-----------|------|--------|
-| **open-setup** | 新项目首次使用 | `rules/` + `AGENTS.md` | 扫描项目结构和编码风格，初始化上下文 |
+| **open-setup** | 新项目首次使用 | `ai-work/rules/` + `ai-work/AGENTS.md` | 扫描项目结构和编码风格，初始化上下文 |
 | **open-understand** | 改老功能前 | `code-map.md` | 深度分析老代码，产出模块地图/调用链/影响雷达 |
-| **open-spec** | 每次变更前 | `changes/<name>/spec.md + tasks.md + log.md` | 把需求转成结构化变更文档 |
+| **open-spec** | 每次变更前 | `ai-work/changes/<name>/spec.md + tasks.md + log.md` | 把需求转成结构化变更文档 |
 | **open-apply** | Spec 确认后 | 实际代码 | 按 task 逐步编码，有偏差自动提案不硬来 |
 | **open-review** | 编码完成后 | 审查报告 | AI 幻觉检查 → Spec 合规 → 代码质量 |
 | **open-debug** | 出 Bug 时 | 根因分析 + 修复 | 系统化调试，根因是 spec 问题就回溯 |
-| **open-archive** | Review 通过后 | 归档 + 知识沉淀 | 归档变更，提取知识到 knowledge/ |
+| **open-archive** | Review 通过后 | 归档 + 知识沉淀 | 归档变更，提取知识到 ai-work/knowledge/ |
 
 ---
 
@@ -38,7 +38,7 @@
 ```
 1. skill open-setup
    → 自动检测项目类型（Java/Python/Frontend/Go/Node.js/Rust）
-   → 扫描目录结构 + 代码风格 → 生成 rules/ + AGENTS.md
+   → 扫描目录结构 + 代码风格 → 生成 ai-work/rules/ + ai-work/AGENTS.md
 
 2. 提需求
    skill open-spec "我要加一个用户积分功能"
@@ -61,7 +61,7 @@
 
 5. 归档
    skill open-archive <变更名>
-   → 知识提取 → 归档到 archives/ → 更新 knowledge/
+   → 知识提取 → 归档到 ai-work/archives/ → 更新 ai-work/knowledge/
 ```
 
 ### 改老功能
@@ -139,7 +139,7 @@ debug 发现是 spec 问题时不绕路，明确回到 open-spec 更新。
 | 2 | **多语言原生** | 7 种项目类型（Java/Python/Frontend/Go/Node.js/Rust/通用）各有一套层名、术语、构建命令 |
 | 3 | **防幻觉机制** | Stage 0 幻觉检查 + Verification 铁律 + Diff Preview，三层防护 AI 常见错误 |
 | 4 | **渐变复杂度** | L0（1 文件极简）→ L3（跨模块复杂变更），按需选路径，不杀鸡用牛刀 |
-| 5 | **知识飞轮** | 每次变更的踩坑和发现都沉淀到 knowledge/，越用越聪明 |
+| 5 | **知识飞轮** | 每次变更的踩坑和发现都沉淀到 ai-work/knowledge/，越用越聪明 |
 | 6 | **可观测设计** | spec 强制定义业务指标和对比策略，避免"改完了但不知道对不对" |
 | 7 | **偏差友好** | 不预设 AI 能完美执行，遇到意外有标准提案流程，不是简单停车 |
 
@@ -149,7 +149,7 @@ debug 发现是 spec 问题时不绕路，明确回到 open-spec 更新。
 |---|------|------|
 | 1 | **流程较重** | 即使 L0 也需要走 3 个 skill（spec→apply→review），习惯"直接改"的开发者会觉得繁琐 |
 | 2 | **文档维护成本** | spec/tasks/log/tasks 等多份文档需要同步更新，自动同步能力有限 |
-| 3 | **知识沉淀依赖 AI 质量** | knowledge/ 的质量取决于 AI 是否能识别和提炼有价值的知识，不一定每次都准 |
+| 3 | **知识沉淀依赖 AI 质量** | ai-work/knowledge/ 的质量取决于 AI 是否能识别和提炼有价值的知识，不一定每次都准 |
 | 4 | **团队落地门槛** | 需要整个团队统一使用这套流程，新人需要学习 7 个 skill 的用途和顺序 |
 | 5 | **没有 CI 集成** | 当前流程都是人工触发，没有自动化的 CI 门禁（比如自动跑 review） |
 | 6 | **审查仍然依赖人** | Stage 0 和 1 可以自动跑，但最终代码质量审查还是需要人来看 |

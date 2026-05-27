@@ -22,7 +22,7 @@ Spec 是合同。遇到意外不硬来，提案更新。
 
 ## 前置检查
 
-1. 找到 `changes/<变更名>/` 目录
+1. 找到 `ai-work/changes/<变更名>/` 目录
 2. 确认 spec.md 已通过 HARD-GATE
 3. 确认无 `[待澄清]` 项
 4. 检查当前 Git 分支 — 禁止在 master/main 上编码

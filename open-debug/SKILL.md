@@ -51,7 +51,7 @@ args: "问题描述"
 ## Phase 2: 模式分析（自由度: 高）
 
 1. 对比项目中类似场景的处理方式
-2. 搜索 knowledge/ 是否有相关踩坑记录
+2. 搜索 ai-work/knowledge/ 是否有相关踩坑记录
 3. 分析是偶发问题还是系统性问题
 4. 识别可能的修复方案（至少 2 个）
 
@@ -70,7 +70,7 @@ args: "问题描述"
 1. 实施修复
 2. Verification 铁律：展示验证结果（测试通过/编译通过/问题不再复现）
 3. Git commit: `fix: <修复描述>`
-4. 如有新发现，写入 `changes/<变更名>/log.md`（如果当前有活跃变更）或 `knowledge/<slug>.md`
+4. 如有新发现，写入 `ai-work/changes/<变更名>/log.md`（如果当前有活跃变更）或 `ai-work/knowledge/<slug>.md`
 
 ## 约束
 

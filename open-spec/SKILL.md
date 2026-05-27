@@ -14,7 +14,7 @@ args: "需求描述（自然语言）"
 
 ```
 [open-spec v3.0] 创建变更提案 — Check → Assess → Research → Converge → Draft → Output → HARD-GATE
-[状态] rules/ 已读取: ✅/❌ · changes/ 状态: 无未完成/有未完成
+[状态] ai-work/rules/ 已读取: ✅/❌ · ai-work/changes/ 状态: 无未完成/有未完成
 [检测] 项目类型: <Java / Python / Frontend / Go / Node.js / Rust / Other>
 [检测] 涉及现有代码: ✅ → 建议先跑 open-understand / ❌ 新功能 / ⚡ 混合(既有旧改又有新增)
 ```
@@ -71,7 +71,7 @@ args: "需求描述（自然语言）"
 2. 定位需求涉及的现有代码（补充 code-map.md 未覆盖的部分）
 3. 理解数据模型、API、业务逻辑
 4. 识别调用链和依赖（参考 code-map.md 的全链路追踪结果）
-5. 搜索 knowledge/ 是否有相关知识可复用
+5. 搜索 ai-work/knowledge/ 是否有相关知识可复用
 6. 记录可复用模式和风险（参考 code-map.md 的"风险与模式"章节）
 7. 参考 code-map.md 的"测试契约"章节，了解已有测试覆盖和边界
 8. 参考 code-map.md 的"变更耦合分析"章节，识别同改依赖
@@ -130,7 +130,7 @@ args: "需求描述（自然语言）"
 
 ## Output: 生成完整文档
 
-在 `changes/<变更名>/` 下创建三个文件。**根据 Assess 阶段检测到的项目类型适配模板措辞和示例**。
+在 `ai-work/changes/<变更名>/` 下创建三个文件。**根据 Assess 阶段检测到的项目类型适配模板措辞和示例**。
 
 ### 项目类型适配规则
 
@@ -213,7 +213,7 @@ args: "需求描述（自然语言）"
 > created: YYYY-MM-DD
 > complexity: L2 中等
 > project_type: <项目类型>
-> code-map: changes/<name>/code-map.md
+> code-map: ai-work/changes/<name>/code-map.md
 
 ## 1. 背景与目标
 为什么做 + 做完后的效果（可验证的结果描述）
@@ -296,7 +296,7 @@ args: "需求描述（自然语言）"
 > created: YYYY-MM-DD
 > complexity: L3 复杂
 > project_type: <项目类型>
-> code-map: changes/<name>/code-map.md
+> code-map: ai-work/changes/<name>/code-map.md
 
 ## 1. 背景与目标
 ## 2. 代码现状（Research Findings）
@@ -435,7 +435,7 @@ args: "需求描述（自然语言）"
 变更名: <name>
 复杂度: L0/L1/L2/L3
 项目类型: <type>
-文件位置: changes/<name>/
+文件位置: ai-work/changes/<name>/
 
 请审阅 spec.md + tasks.md 后:
 - "确认" → 可执行 `skill open-apply`

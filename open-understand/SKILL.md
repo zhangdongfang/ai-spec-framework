@@ -31,8 +31,8 @@ args: "功能模块名或需求描述"
 ### 执行要求
 
 - 所有结论必须附代码出处（文件路径 + 行号）
-- 产出独立于 spec.md 的 `code-map.md`，放在 `changes/<变更名>/` 下
-- 如果尚无 changes/ 目录，放在项目根目录
+- 产出独立于 spec.md 的 `code-map.md`，放在 `ai-work/changes/<变更名>/` 下
+- 如果尚无 ai-work/changes/ 目录，放在 `ai-work/` 目录
 - **根据检测到的项目类型，选择对应的层名、术语和模板示例**
 
 ---
@@ -174,7 +174,7 @@ git log --oneline -- <文件路径>
 
 ## 产出物: code-map.md
 
-在 `changes/<变更名>/code-map.md`（或项目根目录 `code-map.md`）输出。**code-map.md 的所有示例应匹配项目的实际语言**，以下是各章节的通用描述 + 按项目类型的示例对照。
+在 `ai-work/changes/<变更名>/code-map.md`（或 `ai-work/code-map.md`）输出。**code-map.md 的所有示例应匹配项目的实际语言**，以下是各章节的通用描述 + 按项目类型的示例对照。
 
 ```markdown
 # Code Map — <模块名/功能名>
@@ -367,7 +367,7 @@ Store State:
 4. **按需裁剪** — 上述模板是"全集"，可以只输出相关章节
 5. **所有示例使用项目实际语言** — 别在 Python 项目里写 DAO/Controller，别在前端项目里写 Service/Entity
 6. **如果项目没有 git 历史** — 跳过变更耦合分析和 git 考古章节
-7. **输出位置** — `changes/<变更名>/code-map.md`，若尚无 changes/ 目录则放项目根目录
+7. **输出位置** — `ai-work/changes/<变更名>/code-map.md`，若尚无 ai-work/changes/ 目录则放 `ai-work/code-map.md`
 
 ## 与 open-spec 的关系
 
