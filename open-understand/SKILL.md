@@ -1,6 +1,6 @@
 ---
 name: open-understand
-description: "代码理解 — 对老功能进行深度代码分析，产出 code-map.md（模块地图/架构图/调用链/影响雷达等）"
+description: "代码理解 — 对老功能进行深度代码分析，产出 code-map.md（骨架提取/语义摘要/调用链/依赖关系图/增量分析）"
 args: "功能模块名或需求描述"
 ---
 
@@ -10,12 +10,10 @@ args: "功能模块名或需求描述"
 
 ## ⚡ 技能激活确认（必须执行）
 
-你的第一条回复**必须完全输出**以下内容：
+你的第一条回复**必须输出**以下单行确认：
 
 ```
-[open-understand v2.0] 代码理解 — 深度分析 + 结构化产出 code-map.md
-[模块] <目标模块/功能>
-[项目类型] <Java / Python / Frontend / Go / Node.js / Rust / Other>
+[open-understand v3.0 | <项目类型> | 模块: <目标模块/功能> | 增量: ✅已有code-map/❌首次] 开始代码理解
 ```
 
 输出此确认后，继续执行后续步骤。
@@ -39,31 +37,47 @@ args: "功能模块名或需求描述"
 
 ## 执行步骤
 
-### Step 1: 快速扫描 + 语言检测
+### Step 1: 快速扫描 + 语言检测 + 增量判断
 
 1. 检测项目类型（复用 open-setup 的检测逻辑）
 2. 执行 `tree -d -L 3`，建立整体目录感
 3. 定位目标模块的核心目录结构
+4. **增量检查**：如果已存在 `code-map.md`，读取"附-1 文件指纹"表，对比目标模块文件的当前修改时间（`git log -1 --format=%ai -- <file>`）。仅对**有变更的文件**重新执行 Step 2-8，未变更的文件复用已有分析结果
 
-### Step 2: 全链路追踪（由外到内）
+### Step 1.5: 架构模式识别
 
-从**入口层**开始，逐层向内追踪到**存储层**。**根据项目类型使用对应的层名**：
+基于 Step 1 的目录结构和 `project-rules.md`，识别目标模块使用的**架构模式**：
 
-#### 各项目类型的典型分层
+- 分层架构（Layered）/ 六边形架构（Hexagonal）/ CQRS / 事件驱动 / MVC / MVVM / 其他
+- 记录模式的核心约束（如分层架构要求"只允许上层调用下层，不允许反向引用"）
+- 此识别结果写入 code-map.md §3 架构概览，后续 open-spec 的架构约束章节引用
 
-| 项目类型 | 入口层 | 中间层 | 数据访问层 | 存储层 |
-|---------|--------|--------|-----------|-------|
-| **Java/Spring** | Controller | Service | DAO / Repository | DB / Redis |
-| **Python FastAPI** | Router / Route | Service | Repository / Model | DB / Redis |
-| **Python Django** | View / ViewSet | Serializer | Model / Manager | DB |
-| **Frontend (React)** | Page / Component | Hook / Store | API Client | API / Cache |
-| **Frontend (Vue)** | View / Page | Store / Composable | API Client | API / Cache |
-| **Go** | Handler | Service | Repository / Store | DB |
-| **Node.js Express** | Route / Middleware | Service / Controller | Model / DAO | DB |
-| **Node.js NestJS** | Controller | Service | Repository / Prisma | DB |
-| **Rust** | Handler | Service | Repository | DB |
+### Step 2: 骨架提取（声明优先）
 
-**通用追踪模式（适配到对应语言）**：
+在深入追踪调用链之前，先对目标模块的每个核心文件提取**函数/类声明清单**，建立"文件 × 函数"矩阵。
+
+**执行方式**：
+1. 对模块内每个核心文件，搜索函数/类/接口声明（根据语言使用对应关键词：`function`/`def`/`class`/`func`/`interface`/`struct`/`impl` 等）
+2. 记录每个声明的：文件路径、名称、行号、签名（参数+返回值）
+3. 产出一个声明清单表：
+
+```
+| 文件 | 声明类型 | 名称 | 行号 | 签名 |
+|------|---------|------|------|------|
+| UserService.java | method | register | L15 | (RegisterDTO) → User |
+| UserService.java | method | login | L45 | (String email, String pwd) → Token |
+| UserDao.java | interface | findByEmail | L12 | (String) → Optional<User> |
+```
+
+4. 此清单在后续 Step 3 调用链追踪时用于**交叉验证**：
+   - 调用链覆盖了哪些函数 ✅
+   - 哪些函数不在任何调用链上 ⚠️（可能是死代码、独立入口、或遗漏的链路）
+
+### Step 3: 全链路追踪（由外到内）
+
+从**入口层**开始，逐层向内追踪到**存储层**。读取 `ai-work/rules/project-rules.md` 获取当前项目的层名（入口层/业务层/数据访问层）。
+
+**通用追踪模式（用 project-rules.md 中的实际层名替换）**：
 
 ```
 入口层 (Controller / Route / Page / Handler)
@@ -76,39 +90,22 @@ args: "功能模块名或需求描述"
 
 对于每个节点，记录：文件路径、函数/方法签名、核心逻辑摘要、行号。
 
-**按项目类型搜索入口的方式**：
+**业务规则提取**：在追踪过程中，识别代码中隐含的业务规则（如校验逻辑、状态流转条件、金额计算规则、权限检查），记录到 code-map.md §4.5 业务规则清单。这些规则是后续写 spec 的关键输入。
 
-| 项目类型 | 搜索方式 |
-|---------|---------|
-| Java/Spring | 搜索 `@RequestMapping`, `@GetMapping`, `@PostMapping`, `@RestController` |
-| Python FastAPI | 搜索 `@router.get`, `@router.post`, `@app.get`, `APIRouter` |
-| Python Django | 搜索 `urlpatterns`, `path(`, `re_path(`, `as_view()` |
-| Frontend | 搜索路由配置文件（`router.ts`, `routes.ts`, `next.config`）+ 页面组件 |
-| Go | 搜索 `http.Handle`, `http.HandleFunc`, `gin.GET`, `echo.GET`, `fiber.Get` |
-| Node.js Express | 搜索 `app.get(`, `app.post(`, `router.get(` |
-| Node.js NestJS | 搜索 `@Controller`, `@Get`, `@Post` |
-| Rust | 搜索 `.route(`, `get(`, `post(`, 路由宏 |
+**搜索入口的方式**：根据 `ai-work/rules/project-rules.md` 中的项目类型和框架，搜索对应的路由/入口注解或配置（如 Java 搜 `@RequestMapping`，Python 搜 `@router.get`，前端搜路由配置文件等）。
 
-### Step 3: 逆向影响雷达
+### Step 4: 依赖关系追踪（上下游）
 
-对 Step 2 中发现的每个核心函数/模型，**反向追踪谁依赖它们**：
+对 Step 3 中发现的每个核心函数/模型，**双向追踪依赖关系**：
 
-- **Search callers**: 谁调用了这个函数？
-- **Search consumers**: 谁引用了这个数据模型/组件？
-- **Search config references**: 哪些配置项控制这个行为？
+- **下游（我调用谁）**: 目标函数直接调用的所有函数，记录关系类型（方法调用/接口实现/事件触发）
+- **上游（谁调用我）**: 反向搜索所有调用目标函数的地方，记录入口路径和影响范围
+- **跨文件 Import**: 目标模块的文件间 import/依赖关系
+- **配置引用**: 哪些配置项控制这个行为
 
-输出一个依赖树（语言无关）：
+输出格式见 code-map.md §8 依赖关系图（3 张结构化表格 + 可选 Mermaid 图）。
 
-```mermaid
-graph TD
-  A[入口] --> B[业务逻辑]
-  B --> C[数据访问]
-  C --> D[(存储)]
-  E[定时任务] --> B
-  F[后台入口] --> B
-```
-
-### Step 4: 变更耦合分析
+### Step 5: 变更耦合分析
 
 使用 `git log` 分析目标文件的历史变更模式（语言无关）：
 
@@ -124,7 +121,7 @@ git log --oneline -- <文件路径>
 - 曾经一起引入 Bug 的记录（如果有回滚或 fix commit）
 - 说明"改这个模块通常还需要改什么"
 
-### Step 5: 相似功能发现
+### Step 6: 相似功能发现
 
 如果需求是新功能但类似功能已存在：
 
@@ -132,17 +129,9 @@ git log --oneline -- <文件路径>
 2. 提取该功能的完整结构作为模板（入口→业务逻辑→数据访问→存储）
 3. 标注可复用部分和需修改部分
 
-### Step 6: 测试契约提取
+### Step 7: 测试契约提取
 
-搜索与目标模块相关的测试文件（**根据项目类型使用对应的测试框架命名**）：
-
-| 项目类型 | 测试文件模式 | 常见框架 |
-|---------|------------|---------|
-| Java | `*Test.java` | JUnit, TestNG, Mockito |
-| Python | `test_*.py` / `*_test.py` | pytest, unittest |
-| Frontend | `*.test.ts` / `*.spec.ts` / `*.test.tsx` | Vitest, Jest, Cypress |
-| Go | `*_test.go` | go test, testify |
-| Node.js | `*.test.ts` / `*.spec.ts` | Jest, Mocha, Vitest |
+搜索与目标模块相关的测试文件（根据 `ai-work/rules/project-rules.md` 中的项目类型确定测试文件命名模式和框架）。
 
 提取内容（语言无关）：
 
@@ -155,18 +144,9 @@ git log --oneline -- <文件路径>
 - 测试未覆盖的区域（潜在风险）
 - 与需求冲突的测试（如果需求变了）
 
-### Step 7: 配置/常量标注
+### Step 8: 配置/常量标注
 
-搜索与目标模块相关的所有配置项、常量、枚举、feature flag（**根据项目类型使用对应的搜索方式**）：
-
-| 项目类型 | 配置格式 | 搜索方式 | 常量/枚举定义 |
-|---------|---------|---------|-------------|
-| Java/Spring | `application.yml`, `application.properties` | `@Value`, `@ConfigurationProperties`, 环境变量 | `enum`, `interface Constants`, `static final` |
-| Python | `settings.py`, `config.py`, `.env`, `pyproject.toml` | `pydantic-settings`, `os.getenv`, `django.conf.settings` | `class Config`, `Enum`, 模块级常量 |
-| Frontend | `.env`, `.env.development`, `vite.config`, `next.config` | `import.meta.env`, `process.env` | `const`, `enum` (TypeScript), 常量文件 |
-| Go | `config.yaml`, `config.toml`, `.env` | `viper`, `os.Getenv`, `flag` | `const` 块, `iota` 枚举 |
-| Node.js | `.env`, `config/` | `dotenv`, `@nestjs/config`, `process.env` | `const`, `enum` (TypeScript) |
-| Rust | `config.toml`, `config.rs` | `dotenvy`, `config` crate, 环境变量 | `const`, `enum` |
+搜索与目标模块相关的所有配置项、常量、枚举、feature flag。根据 `ai-work/rules/project-rules.md` 中的项目类型确定配置文件格式和搜索方式。
 
 标注"修改此功能时可能需要同步修改的配置"。
 
@@ -224,7 +204,23 @@ internal/
 
 ---
 
-## 2. 架构概览
+## 2. 文件语义摘要
+
+（基于 Step 2 骨架提取结果，对每个核心文件生成两级摘要：文件级 + 函数级）
+
+| 文件 | 行数 | 文件摘要 | 关键函数（行号 · 签名 · 一句话职责） |
+|------|------|---------|--------------------------------------|
+| （文件路径） | xx | 一句话描述文件整体职责 | `funcA`(Lxx) 做什么; `funcB`(Lxx) 做什么 |
+| （文件路径） | xx | 一句话描述文件整体职责 | `funcC`(Lxx) 做什么; `funcD`(Lxx) 做什么 |
+
+> 标注说明：⚠️ = 不在任何调用链上的函数（来自 Step 2 交叉验证）
+
+---
+
+## 3. 架构概览
+
+**架构模式**: （分层 / 六边形 / CQRS / 事件驱动 / MVC / MVVM）
+**核心约束**: （如"只允许上层→下层调用"、"读写分离"）
 
 （Mermaid 组件关系图，使用项目实际层名）
 
@@ -239,7 +235,7 @@ graph LR
 
 ---
 
-## 3. 完整调用链路
+## 4. 完整调用链路
 
 ### 链路: xxx 功能
 
@@ -252,9 +248,18 @@ graph LR
 
 （多条链路按功能分别列出）
 
+### 4.5 业务规则清单
+
+（从调用链中提取的隐含业务规则）
+
+| 规则 | 代码位置 | 说明 |
+|------|---------|------|
+| （如"金额不能为负"） | file:Lxx | 校验逻辑 |
+| （如"状态从 A→B 必须经过 C"） | file:Lxx | 状态机约束 |
+
 ---
 
-## 4. 关键文件清单
+## 5. 关键文件清单
 
 | 文件 | 角色 | 风险等级 | 行数 |
 |------|------|----------|------|
@@ -264,7 +269,7 @@ graph LR
 
 ---
 
-## 5. 数据模型
+## 6. 数据模型
 
 （根据实际项目类型选择对应的表示方式）
 
@@ -296,7 +301,7 @@ Store State:
 
 ---
 
-## 6. 变更耦合分析
+## 7. 变更耦合分析
 
 | 本模块文件 | 常一同变更的文件 | 相关性 |
 |-----------|----------------|--------|
@@ -305,22 +310,36 @@ Store State:
 
 ---
 
-## 7. 影响雷达
+## 8. 依赖关系图
 
-```
-（入口函数）
-  └── （业务函数）
-        ├── （数据函数1）
-        ├── （外部服务）
-        └── （业务函数）也被以下调用:
-              ├── （其他入口1）
-              ├── （其他入口2）
-              └── （间接调用）
-```
+（基于 Step 4 逆向追踪结果，结构化输出三类依赖关系）
+
+### 8.1 下游依赖（目标函数调用了谁）
+
+| 源函数 | 目标函数 | 关系类型 | 文件:行号 |
+|--------|---------|---------|----------|
+| （业务函数） | （数据访问函数） | 方法调用 | file:Lxx |
+| （业务函数） | （外部服务函数） | 方法调用 | file:Lxx |
+
+### 8.2 上游依赖（谁调用了目标函数）
+
+| 调用方 | 被调用函数 | 入口路径 | 影响范围 |
+|--------|-----------|---------|---------|
+| （入口函数A） | （目标函数） | GET /api/xxx | 功能A |
+| （定时任务B） | （目标函数） | cron 调用 | 功能B |
+
+### 8.3 跨文件 Import/依赖关系
+
+| 源文件 | 目标文件/模块 | 依赖方式 | 说明 |
+|--------|-------------|---------|------|
+| （业务文件） | （数据文件） | import | 数据访问 |
+| （业务文件） | （外部SDK） | import | 第三方调用 |
+
+> 如果依赖关系复杂，附一张 Mermaid 图辅助可视化
 
 ---
 
-## 8. 配置与常量
+## 9. 配置与常量
 
 | 配置/常量 | 位置 | 说明 |
 |-----------|------|------|
@@ -329,7 +348,7 @@ Store State:
 
 ---
 
-## 9. 测试契约
+## 10. 测试契约
 
 | 测试文件 | 用例名 | 验证规则 | 边界 |
 |---------|--------|---------|------|
@@ -337,7 +356,7 @@ Store State:
 
 ---
 
-## 10. 风险与模式
+## 11. 风险与模式
 
 ### 可复用模式
 
@@ -350,7 +369,15 @@ Store State:
 
 ---
 
-## 附: Git 考古
+## 附-1: 文件指纹（增量分析用）
+
+| 文件 | 分析时间 | 行数 | git 最后修改 |
+|------|---------|------|-------------|
+| ... | YYYY-MM-DD | xx | YYYY-MM-DD |
+
+> 再次运行 open-understand 时，比对此表：文件未变更的章节可跳过重新分析，只更新变化的部分。
+
+## 附-2: Git 考古
 
 | 文件 | 最近修改 | 主要修改者 | 历史提交数 | 关键 Commit |
 |------|---------|-----------|-----------|------------|
